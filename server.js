@@ -10,6 +10,9 @@ app.use(express.static('public'));
 
 app.use(require('./routes'));
 
+// Tells Mongoose which database we want to connect to
+// If the environment variable "MONGODB_URI" exists, like on heroku when we deploy later, it will use that
+// otherwise, it will short circuit to the local mongoDB servers database at "mongodb://localhost/pizza-hunt"
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pizza-hunt', {
     useFindAndModify: false,
     useNewUrlParser: true,
