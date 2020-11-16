@@ -41,7 +41,7 @@ const pizzaController = {
 
     // Update pizzaById
     // deconstructs the params and body data
-    // If we dont set { new: true }, it will return the original document - 
+    // If we don't set { new: true }, it will return the original document - 
     // We're instructing mongoose to return the new version of the document
     updatePizza({ params, body }, res) {
         Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
