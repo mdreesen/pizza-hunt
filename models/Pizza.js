@@ -14,37 +14,42 @@ The pizza's suggested size
 The pizza's toppings
 */
 
-const PizzaSchema = new Schema({
-    pizzaName: {
+const PizzaSchema = new Schema(
+    {
+      pizzaName: {
         type: String
-    },
-    createdBy: {
+      },
+      createdBy: {
         type: String
-    },
-    createdAt: {
+      },
+      createdAt: {
         type: Date,
         default: Date.now,
-    },
-    size: {
+      },
+      size: {
         type: String,
         default: 'Large'
+      },
+      toppings: [],
+      comments: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Comment'
+        }
+      ]
     },
-    toppings: [],
-    comments: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-    }]
-}, {
-    toJSON: {
+    {
+      toJSON: {
         virtuals: true,
-    },
-    id: false
-});
+      },
+      id: false
+    }
+  );
 
 // get total count of comments and replies on retrieval
 PizzaSchema.virtual('commentCount').get(function() {
     return this.comments.length;
-});
+  });
 
 // need to call this after the schema is made
 const Pizza = model('Pizza', PizzaSchema);

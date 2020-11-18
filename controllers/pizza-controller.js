@@ -5,6 +5,13 @@ const pizzaController = {
     // Get all Pizzas
     getAllPizza(req, res) {
         Pizza.find({})
+            .populate({
+                path: 'comments',
+                select: '-__v'
+            })
+            // this should not return an id
+            .select('__v')
+            .sort({ id: -1 })
             .then(dbPizzaData => res.json(dbPizzaData))
             .catch(err => {
                 console.log(err);
