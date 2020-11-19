@@ -17,10 +17,16 @@ The pizza's toppings
 
 const PizzaSchema = new Schema({
     pizzaName: {
-        type: String
+        type: String,
+        // you can also provide a custom message to required - 
+        // required: 'Username needs to be provided'
+        required: true,
+        trim: true
     },
     createdBy: {
-        type: String
+        type: String,
+        required: true,
+        trim: true
     },
     createdAt: {
         type: Date,
@@ -29,6 +35,9 @@ const PizzaSchema = new Schema({
     },
     size: {
         type: String,
+        required: true,
+        // enumerable, set of data that can be iterated over, much like the for ... in loop to iterate through an object
+        enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
         default: 'Large'
     },
     toppings: [],

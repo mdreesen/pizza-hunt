@@ -48,8 +48,9 @@ const pizzaController = {
     // If we don't set { new: true }, it will return the original document - 
     // We're instructing mongoose to return the new version of the document
     // We're instructing mongoose to return the new version of the document
+    // runValidators include this explicit setting when updating data so that it knows to validate any new information
     updatePizza({ params, body }, res) {
-        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true })
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
             .then(dbPizzaData => {
                 if (!dbPizzaData) {
                     res.status(404).json({ message: 'No pizza found with this id!' });
@@ -57,7 +58,7 @@ const pizzaController = {
                 }
                 res.json(dbPizzaData);
             })
-            .catch(err => res.json(err));
+            .catch(err => res.status(400).json(err));
     },
 
     // Delete Pizza
