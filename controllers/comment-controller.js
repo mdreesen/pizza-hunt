@@ -18,6 +18,20 @@ const commentController = {
             .catch(err => res.json(err));
     },
 
+    // $push allows for duplicates
+    // $addToSet does the same thing for push, but does not allow duplicates
+    addReply({ params, body }, res) {
+        Comment.findOneAndUpdate({ _id: params.commentId }, { $push: { replies: body } }, { new: true })
+            .then(dbPizzaData => {
+                if (!dbPizzaData) {
+                    res.status(404).json({ message: 'No pizza found with this id' })
+                    return
+                }
+                res.json(dbPizzaData)
+            })
+            .catch(err = res.json(err));
+    },
+
     // remove comment
     removeComment({ params }, res) {
         Comment.findOneAndDelete({ _id: params.commentId })
@@ -34,6 +48,13 @@ const commentController = {
                 }
                 res.json(dbPizzaData);
             })
+            .catch(err => res.json(err));
+    },
+
+    // using $pull here to remove a specific reply within that comment
+    removeReply({ params }, res) {
+        Comment.findOneAndUpdate({ _id: params.commentId }, { $pull: { replies: { replyId: params.replyId } } }, { new: true })
+            .then(dbPizzaData => res.json(dbPizzaData))
             .catch(err => res.json(err));
     }
 }
